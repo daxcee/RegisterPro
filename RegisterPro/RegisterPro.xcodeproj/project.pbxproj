@@ -27,6 +27,17 @@
 		7A3944061929A2BD009C22B9 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 7A3944041929A2BD009C22B9 /* InfoPlist.strings */; };
 		7A3944081929A2BD009C22B9 /* RegisterProTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A3944071929A2BD009C22B9 /* RegisterProTests.m */; };
 		7A39441A1929B17D009C22B9 /* Transaction.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A3944191929B17D009C22B9 /* Transaction.m */; };
+		7A39443B1929CC26009C22B9 /* Parse.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A39443A1929CC26009C22B9 /* Parse.framework */; };
+		7A39443D1929CC3A009C22B9 /* Accounts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A39443C1929CC3A009C22B9 /* Accounts.framework */; };
+		7A39443F1929CC43009C22B9 /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A39443E1929CC43009C22B9 /* Social.framework */; };
+		7A3944411929CC4A009C22B9 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A3944401929CC4A009C22B9 /* CoreLocation.framework */; };
+		7A3944431929CC59009C22B9 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A3944421929CC59009C22B9 /* QuartzCore.framework */; };
+		7A3944451929CC5F009C22B9 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A3944441929CC5F009C22B9 /* libz.dylib */; };
+		7A3944471929CC66009C22B9 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A3944461929CC66009C22B9 /* CFNetwork.framework */; };
+		7A3944491929CCA0009C22B9 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A3944481929CCA0009C22B9 /* AudioToolbox.framework */; };
+		7A39444B1929CCB0009C22B9 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A39444A1929CCB0009C22B9 /* MobileCoreServices.framework */; };
+		7A39444D1929CCBB009C22B9 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A39444C1929CCBB009C22B9 /* StoreKit.framework */; };
+		7A39444F1929CCC9009C22B9 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A39444E1929CCC9009C22B9 /* SystemConfiguration.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -66,6 +77,17 @@
 		7A3944071929A2BD009C22B9 /* RegisterProTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RegisterProTests.m; sourceTree = "<group>"; };
 		7A3944181929B17D009C22B9 /* Transaction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Transaction.h; sourceTree = "<group>"; };
 		7A3944191929B17D009C22B9 /* Transaction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Transaction.m; sourceTree = "<group>"; };
+		7A39443A1929CC26009C22B9 /* Parse.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Parse.framework; sourceTree = "<group>"; };
+		7A39443C1929CC3A009C22B9 /* Accounts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accounts.framework; path = System/Library/Frameworks/Accounts.framework; sourceTree = SDKROOT; };
+		7A39443E1929CC43009C22B9 /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
+		7A3944401929CC4A009C22B9 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
+		7A3944421929CC59009C22B9 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		7A3944441929CC5F009C22B9 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
+		7A3944461929CC66009C22B9 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
+		7A3944481929CCA0009C22B9 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
+		7A39444A1929CCB0009C22B9 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
+		7A39444C1929CCBB009C22B9 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
+		7A39444E1929CCC9009C22B9 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -73,10 +95,21 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7A39444F1929CCC9009C22B9 /* SystemConfiguration.framework in Frameworks */,
+				7A39444D1929CCBB009C22B9 /* StoreKit.framework in Frameworks */,
+				7A39444B1929CCB0009C22B9 /* MobileCoreServices.framework in Frameworks */,
+				7A3944491929CCA0009C22B9 /* AudioToolbox.framework in Frameworks */,
+				7A3944471929CC66009C22B9 /* CFNetwork.framework in Frameworks */,
+				7A3944451929CC5F009C22B9 /* libz.dylib in Frameworks */,
+				7A3944431929CC59009C22B9 /* QuartzCore.framework in Frameworks */,
 				7A3943D31929A2BD009C22B9 /* CoreGraphics.framework in Frameworks */,
+				7A3944411929CC4A009C22B9 /* CoreLocation.framework in Frameworks */,
+				7A39443F1929CC43009C22B9 /* Social.framework in Frameworks */,
+				7A39443D1929CC3A009C22B9 /* Accounts.framework in Frameworks */,
 				7A3943D71929A2BD009C22B9 /* CoreData.framework in Frameworks */,
 				7A3943D51929A2BD009C22B9 /* UIKit.framework in Frameworks */,
 				7A3943D11929A2BD009C22B9 /* Foundation.framework in Frameworks */,
+				7A39443B1929CC26009C22B9 /* Parse.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -116,6 +149,16 @@
 		7A3943CF1929A2BD009C22B9 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				7A39444E1929CCC9009C22B9 /* SystemConfiguration.framework */,
+				7A39444C1929CCBB009C22B9 /* StoreKit.framework */,
+				7A39444A1929CCB0009C22B9 /* MobileCoreServices.framework */,
+				7A3944481929CCA0009C22B9 /* AudioToolbox.framework */,
+				7A3944461929CC66009C22B9 /* CFNetwork.framework */,
+				7A3944441929CC5F009C22B9 /* libz.dylib */,
+				7A3944421929CC59009C22B9 /* QuartzCore.framework */,
+				7A3944401929CC4A009C22B9 /* CoreLocation.framework */,
+				7A39443E1929CC43009C22B9 /* Social.framework */,
+				7A39443C1929CC3A009C22B9 /* Accounts.framework */,
 				7A3943D01929A2BD009C22B9 /* Foundation.framework */,
 				7A3943D21929A2BD009C22B9 /* CoreGraphics.framework */,
 				7A3943D41929A2BD009C22B9 /* UIKit.framework */,
@@ -128,6 +171,7 @@
 		7A3943D81929A2BD009C22B9 /* RegisterPro */ = {
 			isa = PBXGroup;
 			children = (
+				7A3944391929CC26009C22B9 /* 3rd Party */,
 				7A3944111929AD21009C22B9 /* Model */,
 				7A3943E11929A2BD009C22B9 /* RegProAppDelegate.h */,
 				7A3943E21929A2BD009C22B9 /* RegProAppDelegate.m */,
@@ -180,6 +224,14 @@
 				7A3944191929B17D009C22B9 /* Transaction.m */,
 			);
 			path = Model;
+			sourceTree = "<group>";
+		};
+		7A3944391929CC26009C22B9 /* 3rd Party */ = {
+			isa = PBXGroup;
+			children = (
+				7A39443A1929CC26009C22B9 /* Parse.framework */,
+			);
+			path = "3rd Party";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -421,6 +473,11 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/RegisterPro/3rd",
+					Party,
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "RegisterPro/RegisterPro-Prefix.pch";
 				INFOPLIST_FILE = "RegisterPro/RegisterPro-Info.plist";
@@ -434,6 +491,11 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/RegisterPro/3rd",
+					Party,
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "RegisterPro/RegisterPro-Prefix.pch";
 				INFOPLIST_FILE = "RegisterPro/RegisterPro-Info.plist";
