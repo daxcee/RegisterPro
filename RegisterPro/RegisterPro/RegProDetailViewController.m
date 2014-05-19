@@ -7,6 +7,7 @@
 //
 
 #import "RegProDetailViewController.h"
+#import "Transaction.h"
 
 @interface RegProDetailViewController ()
 @property (strong, nonatomic) UIPopoverController *masterPopoverController;
@@ -36,7 +37,10 @@
     // Update the user interface for the detail item.
 
     if (self.detailItem) {
-        self.detailDescriptionLabel.text = [[self.detailItem valueForKey:@"timeStamp"] description];
+        //self.detailDescriptionLabel.text = [[self.detailItem valueForKey:@"timeStamp"] description];
+        self.detailDescriptionLabel.text = self.detailItem.details;
+        self.detailsText.text = self.detailItem.details;
+        self.transactionDate.text = self.detailItem.transactionDate.description;
     }
 }
 
@@ -69,4 +73,25 @@
     self.masterPopoverController = nil;
 }
 
+- (IBAction)saveTransaction:(id)sender {
+    self.detailItem.details = self.detailsText.text;
+    self.detailItem.amount = [NSNumber numberWithDouble:[self.transactionAmount.text doubleValue]];
+    [self.navigationController popViewControllerAnimated:YES];
+    
+    // Save the changes to the persistent store
+    NSError *error = nil;
+    NSManagedObjectContext *context = [self.detailItem managedObjectContext];
+    if (![context save:&error]) {
+        // Replace this implementation with code to handle the error appropriately.
+        // abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
+        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+        abort();
+    }
+}
+
+-(BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+    [textField resignFirstResponder];
+    return YES;
+}
 @end

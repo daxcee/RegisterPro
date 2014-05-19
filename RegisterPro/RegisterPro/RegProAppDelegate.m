@@ -9,6 +9,7 @@
 #import "RegProAppDelegate.h"
 
 #import "RegProMasterViewController.h"
+#import "Transaction.h"
 
 @implementation RegProAppDelegate
 
@@ -32,6 +33,45 @@
         RegProMasterViewController *controller = (RegProMasterViewController *)navigationController.topViewController;
         controller.managedObjectContext = self.managedObjectContext;
     }
+    
+    // DEVELOPMENT TESTING
+/*#define kTransaction @"Transaction"
+#define kAmount @"amount"
+#define kDetails @"details"
+#define kType @"transactionType"
+    typedef enum {
+        TRANSACTION_DEPOSIT = 0,
+        TRANSACTION_WITHDRAWAL
+    } transactionTypeID;
+    
+    // Get the context
+    NSManagedObjectContext *context = [self managedObjectContext];
+    
+    // Create a transaction
+    Transaction *transactionDetail1 = [NSEntityDescription insertNewObjectForEntityForName:kTransaction inManagedObjectContext:context];
+    transactionDetail1.details = @"Paycheck";
+    transactionDetail1.transactionDate = [NSDate dateWithTimeIntervalSinceNow:24*60*60*-1];
+    transactionDetail1.amount = [NSNumber numberWithDouble:2580.82];
+    transactionDetail1.transactionType = [NSNumber numberWithInt:1];
+    
+    // Save the transaction
+    NSError *error;
+    if (![context save:&error]) {
+        NSLog(@"Whoops, couldn't save: %@", [error localizedDescription]);
+    }
+    
+    // Fetch and print all transactions
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    NSEntityDescription *entity = [NSEntityDescription
+                                   entityForName:kTransaction inManagedObjectContext:context];
+    [fetchRequest setEntity:entity];
+    NSArray *fetchedObjects = [context executeFetchRequest:fetchRequest error:&error];
+    for (Transaction *transaction in fetchedObjects) {
+        NSLog(@"Details: %@", transaction.details);
+        NSLog(@"Amount: %@", transaction.amount);
+        NSLog(@"Type: %@", transaction.transactionType);
+    }*/
+    
     return YES;
 }
 							

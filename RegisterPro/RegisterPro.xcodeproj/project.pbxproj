@@ -26,6 +26,7 @@
 		7A3943FE1929A2BD009C22B9 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A3943D61929A2BD009C22B9 /* CoreData.framework */; };
 		7A3944061929A2BD009C22B9 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 7A3944041929A2BD009C22B9 /* InfoPlist.strings */; };
 		7A3944081929A2BD009C22B9 /* RegisterProTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A3944071929A2BD009C22B9 /* RegisterProTests.m */; };
+		7A39441A1929B17D009C22B9 /* Transaction.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A3944191929B17D009C22B9 /* Transaction.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -63,6 +64,8 @@
 		7A3944031929A2BD009C22B9 /* RegisterProTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "RegisterProTests-Info.plist"; sourceTree = "<group>"; };
 		7A3944051929A2BD009C22B9 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		7A3944071929A2BD009C22B9 /* RegisterProTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RegisterProTests.m; sourceTree = "<group>"; };
+		7A3944181929B17D009C22B9 /* Transaction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Transaction.h; sourceTree = "<group>"; };
+		7A3944191929B17D009C22B9 /* Transaction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Transaction.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -125,6 +128,7 @@
 		7A3943D81929A2BD009C22B9 /* RegisterPro */ = {
 			isa = PBXGroup;
 			children = (
+				7A3944111929AD21009C22B9 /* Model */,
 				7A3943E11929A2BD009C22B9 /* RegProAppDelegate.h */,
 				7A3943E21929A2BD009C22B9 /* RegProAppDelegate.m */,
 				7A3943E41929A2BD009C22B9 /* Main_iPhone.storyboard */,
@@ -167,6 +171,15 @@
 				7A3944041929A2BD009C22B9 /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		7A3944111929AD21009C22B9 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				7A3944181929B17D009C22B9 /* Transaction.h */,
+				7A3944191929B17D009C22B9 /* Transaction.m */,
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -268,6 +281,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7A39441A1929B17D009C22B9 /* Transaction.m in Sources */,
 				7A3943DF1929A2BD009C22B9 /* main.m in Sources */,
 				7A3943EF1929A2BD009C22B9 /* RegProMasterViewController.m in Sources */,
 				7A3943F21929A2BD009C22B9 /* RegProDetailViewController.m in Sources */,
@@ -487,6 +501,7 @@
 				7A39440D1929A2BD009C22B9 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		7A39440E1929A2BD009C22B9 /* Build configuration list for PBXNativeTarget "RegisterProTests" */ = {
 			isa = XCConfigurationList;
@@ -495,6 +510,7 @@
 				7A3944101929A2BD009C22B9 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 

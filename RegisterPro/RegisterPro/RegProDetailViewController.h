@@ -7,10 +7,14 @@
 //
 
 #import <UIKit/UIKit.h>
+@class Transaction;
+@interface RegProDetailViewController : UIViewController <UISplitViewControllerDelegate, UITextFieldDelegate>
 
-@interface RegProDetailViewController : UIViewController <UISplitViewControllerDelegate>
-
-@property (strong, nonatomic) id detailItem;
+@property (strong, nonatomic) Transaction *detailItem;
 
 @property (weak, nonatomic) IBOutlet UILabel *detailDescriptionLabel;
+@property (weak, nonatomic) IBOutlet UITextField *detailsText;
+@property (weak, nonatomic) IBOutlet UITextField *transactionDate;
+@property (weak, nonatomic) IBOutlet UITextField *transactionAmount;
+- (IBAction)saveTransaction:(id)sender;
 @end
