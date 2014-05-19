@@ -6,6 +6,8 @@
 //  Copyright (c) 2014 Greg Cober. All rights reserved.
 //
 
+#import <Parse/Parse.h>
+
 #import "RegProAppDelegate.h"
 
 #import "RegProMasterViewController.h"
@@ -33,6 +35,11 @@
         RegProMasterViewController *controller = (RegProMasterViewController *)navigationController.topViewController;
         controller.managedObjectContext = self.managedObjectContext;
     }
+    
+    // Let's set up out Parse settings
+    [Parse setApplicationId:@"zWGrFlIF9CHZiKp4Cm2jWWKyddAuvsYqn9SPPJVu"
+                  clientKey:@"LN94qUqQEsGWXWcGfo7ul3Vl9rkKSwtoxTp6t5Q5"];
+    [PFAnalytics trackAppOpenedWithLaunchOptions:launchOptions];
     
     // DEVELOPMENT TESTING
 /*#define kTransaction @"Transaction"
