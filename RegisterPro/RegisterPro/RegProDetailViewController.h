@@ -14,7 +14,11 @@
 
 @property (weak, nonatomic) IBOutlet UILabel *detailDescriptionLabel;
 @property (weak, nonatomic) IBOutlet UITextField *detailsText;
-@property (weak, nonatomic) IBOutlet UITextField *transactionDate;
 @property (weak, nonatomic) IBOutlet UITextField *transactionAmount;
 - (IBAction)saveTransaction:(id)sender;
+@property (weak, nonatomic) IBOutlet UISegmentedControl *transactionType;
+@property (weak, nonatomic) IBOutlet UIDatePicker *transactionDatePicker;
+
+- (IBAction)saveTransactionDate:(UITextField *)sender;
+- (IBAction)amountChanged:(id)sender;
 @end

@@ -122,7 +122,8 @@
 
 // Sent to the delegate when a PFUser is signed up.
 - (void)signUpViewController:(PFSignUpViewController *)signUpController didSignUpUser:(PFUser *)user {
-    [self dismissModalViewControllerAnimated:YES]; // Dismiss the PFSignUpViewController
+    //[self dismissModalViewControllerAnimated:YES]; // Dismiss the PFSignUpViewController
+    [self.navigationController dismissViewControllerAnimated:YES completion:nil];
 }
 
 // Sent to the delegate when the sign up attempt fails.
@@ -135,6 +136,7 @@
     NSLog(@"User dismissed the signUpViewController");
 }
 
+#pragma mark - Misc
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
@@ -249,8 +251,8 @@
     [fetchRequest setSortDescriptors:sortDescriptors];
     
     // Edit the section name key path and cache name if appropriate.
-    // nil for section name key path means "no sections".
-    NSFetchedResultsController *aFetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest managedObjectContext:self.managedObjectContext sectionNameKeyPath:nil cacheName:@"Master"];
+    // nil for section name key path means "no sections". Cober-todo: I'd like to add the date as a section
+    NSFetchedResultsController *aFetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest managedObjectContext:self.managedObjectContext sectionNameKeyPath:@"transactionDate" cacheName:@"Master"];
     aFetchedResultsController.delegate = self;
     self.fetchedResultsController = aFetchedResultsController;
     

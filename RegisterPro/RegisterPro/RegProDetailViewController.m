@@ -32,6 +32,7 @@
     }        
 }
 
+static NSString *enteredtext; // used for the atm style input for amount
 - (void)configureView
 {
     // Update the user interface for the detail item.
@@ -40,13 +41,31 @@
         //self.detailDescriptionLabel.text = [[self.detailItem valueForKey:@"timeStamp"] description];
         self.detailDescriptionLabel.text = self.detailItem.details;
         self.detailsText.text = self.detailItem.details;
-        self.transactionDate.text = self.detailItem.transactionDate.description;
+        self.transactionAmount.text = [NSString stringWithFormat:@"%.2f", [self.detailItem.amount doubleValue]];
+        enteredtext = @"";// This will cause the first thing the user types to start the text anew
+        self.transactionDatePicker.date = self.detailItem.transactionDate;
+        self.transactionType.selectedSegmentIndex = [self.detailItem.transactionType integerValue];
     }
 }
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    // Add the save button to the nav bar
+    UIBarButtonItem *saveButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSave target:self action:@selector(saveTransaction:)];
+    self.navigationItem.rightBarButtonItem = saveButton;
+    
+    // Let's add a done to the number pad for amount
+    UIToolbar* numberToolbar = [[UIToolbar alloc]initWithFrame:CGRectMake(0, 0, self.view.window.frame.size.width, 50)];
+    
+    numberToolbar.items = [NSArray arrayWithObjects:
+                           [[UIBarButtonItem alloc]initWithTitle:@"Done" style:UIBarButtonItemStyleDone target:self action:@selector(doneWithNumberPad)],
+                           nil];
+    
+    self.transactionAmount.inputAccessoryView = numberToolbar;
+    self.transactionAmount.delegate = self;
+    
 	// Do any additional setup after loading the view, typically from a nib.
     [self configureView];
 }
@@ -55,6 +74,10 @@
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+-(void)doneWithNumberPad{
+    [self.transactionAmount resignFirstResponder];
 }
 
 #pragma mark - Split view
@@ -94,4 +117,49 @@
     [textField resignFirstResponder];
     return YES;
 }
+- (IBAction)saveTransactionDate:(id)sender {
+    self.detailItem.transactionDate = self.transactionDatePicker.date;
+}
+
+- (IBAction)amountChanged:(UITextField *)sender {
+//    NSString *amount = [sender.text stringByReplacingOccurrencesOfString:@"$" withString:@""];
+//    if([amount doubleValue] == 0)
+//    {
+//        sender.text = @"$0.00";
+//    }
+//    if(amount.length == 1)
+//    {
+//        sender.text = [NSString stringWithFormat:@"%1.2f", sender.text.doubleValue / 100];
+//    }
+//    if(sender.text.length == 2)
+//    {
+//        sender.text = [NSString stringWithFormat:@"%1.2f", sender.text.doubleValue / 10];
+//    }
+}
+
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
+{
+    if(textField == self.transactionAmount)
+    {
+        if(range.length==1)
+        {
+            if(enteredtext.length>1)
+                enteredtext = [enteredtext substringWithRange:NSMakeRange(0,enteredtext.length-1)];
+        }
+        else
+        {
+            if(enteredtext.length<9)
+                enteredtext = [NSString stringWithFormat:@"%@%@",enteredtext,string];
+        }
+        double amountindecimal = [enteredtext floatValue];
+        double res=amountindecimal * pow(10, -2);
+        NSString * neededstring = [NSString stringWithFormat:@"%.2f",res];
+        if([neededstring isEqualToString:@"0.00"])
+            enteredtext = @"0";
+        textField.text = neededstring;
+        return NO;
+    }
+    return YES;
+}
+
 @end
