@@ -81,6 +81,7 @@
 
 // Sent to the delegate when a PFUser is logged in.
 - (void)logInViewController:(PFLogInViewController *)logInController didLogInUser:(PFUser *)user {
+    // We logged in a user so let's dismiss the login/register view controller
     [self dismissViewControllerAnimated:YES completion:NULL];
 }
 
