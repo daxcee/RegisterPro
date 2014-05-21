@@ -21,4 +21,5 @@
 
 - (IBAction)saveTransactionDate:(UITextField *)sender;
 - (IBAction)amountChanged:(id)sender;
+- (IBAction)transactionTypeChanged:(id)sender;
 @end

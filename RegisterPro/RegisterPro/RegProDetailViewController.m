@@ -41,7 +41,9 @@ static NSString *enteredtext; // used for the atm style input for amount
         //self.detailDescriptionLabel.text = [[self.detailItem valueForKey:@"timeStamp"] description];
         self.detailDescriptionLabel.text = self.detailItem.details;
         self.detailsText.text = self.detailItem.details;
-        self.transactionAmount.text = [NSString stringWithFormat:@"$%.2f", [self.detailItem.amount doubleValue]];
+        double amount = [self.detailItem.amount doubleValue];
+        amount = amount>=0?amount:-1*amount;
+        self.transactionAmount.text = [NSString stringWithFormat:@"$%.2f", amount];
 
         // Let's set up our enteredtext as the amount text without the . and $ sign
         enteredtext = [[self.transactionAmount.text stringByReplacingOccurrencesOfString:@"$" withString:@""] stringByReplacingOccurrencesOfString:@"." withString:@""];
@@ -106,6 +108,11 @@ static NSString *enteredtext; // used for the atm style input for amount
 - (IBAction)saveTransaction:(id)sender {
     self.detailItem.details = self.detailsText.text;
     self.detailItem.amount = [NSNumber numberWithDouble:[[self.transactionAmount.text stringByReplacingOccurrencesOfString:@"$" withString:@""] doubleValue]];
+    self.detailItem.transactionType = [NSNumber numberWithInt:self.transactionType.selectedSegmentIndex];
+    
+    if([self.detailItem.transactionType integerValue] == 0)// COBER-TODO: USE CONSTANT
+        self.detailItem.amount = [NSNumber numberWithDouble: -1*[self.detailItem.amount doubleValue]];
+    
     [self.navigationController popViewControllerAnimated:YES];
     
     // Save the changes to the persistent store
@@ -154,6 +161,9 @@ static NSString *enteredtext; // used for the atm style input for amount
 //    {
 //        sender.text = [NSString stringWithFormat:@"%1.2f", sender.text.doubleValue / 10];
 //    }
+}
+
+- (IBAction)transactionTypeChanged:(id)sender {
 }
 
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string

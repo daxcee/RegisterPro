@@ -121,6 +121,9 @@
                                     <segment title="Withdrawal"/>
                                     <segment title="Deposit"/>
                                 </segments>
+                                <connections>
+                                    <action selector="transactionTypeChanged:" destination="Ah7-4n-0Wa" eventType="valueChanged" id="VD8-CM-K2K"/>
+                                </connections>
                             </segmentedControl>
                             <datePicker contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="date" minuteInterval="1" translatesAutoresizingMaskIntoConstraints="NO" id="1Ia-7q-JZI">
                                 <rect key="frame" x="0.0" y="406" width="320" height="162"/>

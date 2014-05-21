@@ -63,6 +63,8 @@
         // Present the log in view controller
         [self presentViewController:logInViewController animated:YES completion:NULL];
     }
+    
+    [self.navigationItem setTitle:[NSString stringWithFormat:@"Balance $%.2f", [self getTransactionTotal]]];
 }
 
 #pragma mark - Parse delegate methods
@@ -272,6 +274,15 @@
 //        return 10;
 //}
 
+-(NSString*)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+{
+    Transaction *item = [self.fetchedResultsController objectAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:section]];
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    [formatter setDateFormat:@"MM/dd/yy"];
+    NSString *dateString = [formatter stringFromDate:item.transactionDate];
+    return dateString;
+}
+
 #pragma mark - Fetched results controller
 
 - (NSFetchedResultsController *)fetchedResultsController
@@ -328,6 +339,8 @@
             [self.tableView deleteSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:UITableViewRowAnimationFade];
             break;
     }
+
+    [self.navigationItem setTitle:[NSString stringWithFormat:@"Balance $%.2f", [self getTransactionTotal]]];
 }
 
 - (void)controller:(NSFetchedResultsController *)controller didChangeObject:(id)anObject
@@ -354,6 +367,7 @@
             [tableView insertRowsAtIndexPaths:@[newIndexPath] withRowAnimation:UITableViewRowAnimationFade];
             break;
     }
+    [self.navigationItem setTitle:[NSString stringWithFormat:@"Balance $%.2f", [self getTransactionTotal]]];    
 }
 
 - (void)controllerDidChangeContent:(NSFetchedResultsController *)controller
@@ -375,7 +389,7 @@
 {
     Transaction *object = [self.fetchedResultsController objectAtIndexPath:indexPath];
     cell.textLabel.text = object.details;
-    cell.detailTextLabel.text = object.amount.description;
+    cell.detailTextLabel.text = [NSString stringWithFormat:@"$%.2f", [object.amount doubleValue]];
 }
 
 -(double)getTransactionTotal
