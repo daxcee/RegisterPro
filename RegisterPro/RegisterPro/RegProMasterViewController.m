@@ -35,6 +35,8 @@
     self.navigationItem.rightBarButtonItem = addButton;
     self.detailViewController = (RegProDetailViewController *)[[self.splitViewController.viewControllers lastObject] topViewController];
     
+    double total = [self getTransactionTotal];
+    
     // Let's send some test parse data
 //    PFObject *testObject = [PFObject objectWithClassName:@"TestObject"];
 //    testObject[@"foo"] = @"bar";
@@ -151,7 +153,19 @@
     
     // If appropriate, configure the new managed object.
     // Normally you should use accessor methods, but using KVC here avoids the need to add a custom class to the template.
-    transaction.transactionDate = [NSDate date];
+    NSDate* todayAtMidgnight = [NSDate date];
+    NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+    [calendar setTimeZone:[NSTimeZone timeZoneForSecondsFromGMT:0]];
+    
+    NSDateComponents *dateComponents = [calendar components:NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit
+                                                   fromDate:todayAtMidgnight];
+    [dateComponents setHour:0];
+    [dateComponents setMinute:0];
+    [dateComponents setSecond:0];
+    
+    todayAtMidgnight = [calendar dateFromComponents:dateComponents];
+    
+    transaction.transactionDate = todayAtMidgnight;
     
     // Save the context.
     NSError *error = nil;
@@ -227,6 +241,36 @@
         [[segue destinationViewController] setDetailItem:object];
     }
 }
+
+//-(UIView*)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+//{
+//    if(section == 0)
+//    {
+//        UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 320, 40)];
+//        [headerView setBackgroundColor:[UIColor lightGrayColor]];
+//        
+//        UILabel *labelText = [[UILabel alloc] initWithFrame:CGRectMake(15.0, 0.0, 140, 40)];
+//        labelText.font = [UIFont fontWithName:@"TrebuchetMS-Bold" size:18];
+//        [headerView addSubview:labelText];
+//        
+//        UILabel *labelAmount = [[UILabel alloc] initWithFrame:CGRectMake(200.0, 0.0, 120, 40)];
+//        labelText.font = [UIFont fontWithName:@"TrebuchetMS-Bold" size:18];
+//        [headerView addSubview:labelAmount];
+//        
+//        labelText.text = @"Balance";
+//        labelAmount.text = [NSString stringWithFormat:@"$%.2f", [self getTransactionTotal]];
+//        
+//        return headerView;
+//    }
+//    return nil;
+//}
+
+//- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+//    if(section == 0)
+//        return 40;
+//    else
+//        return 10;
+//}
 
 #pragma mark - Fetched results controller
 
@@ -332,6 +376,29 @@
     Transaction *object = [self.fetchedResultsController objectAtIndexPath:indexPath];
     cell.textLabel.text = object.details;
     cell.detailTextLabel.text = object.amount.description;
+}
+
+-(double)getTransactionTotal
+{
+    double total = 0.0;
+    NSManagedObjectContext *context = self.managedObjectContext;
+    NSEntityDescription *entity = [NSEntityDescription entityForName:@"Transaction" inManagedObjectContext:context];
+    NSFetchRequest *request = [[NSFetchRequest alloc] init];
+    [request setEntity:entity];
+//    [request setResultType:NSDictionaryResultType];
+//    [request setPropertiesToFetch:@[@"amount"]];
+    
+    NSError *error;
+    NSArray *objects = [context executeFetchRequest:request error:&error];
+    if(objects == nil)
+    {NSLog(@"Could not get transaction total");}
+    
+    for(Transaction* item in objects)
+    {
+        total+=[item.amount doubleValue];
+    }
+    
+    return total;
 }
 
 @end

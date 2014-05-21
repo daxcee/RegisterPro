@@ -41,8 +41,15 @@ static NSString *enteredtext; // used for the atm style input for amount
         //self.detailDescriptionLabel.text = [[self.detailItem valueForKey:@"timeStamp"] description];
         self.detailDescriptionLabel.text = self.detailItem.details;
         self.detailsText.text = self.detailItem.details;
-        self.transactionAmount.text = [NSString stringWithFormat:@"%.2f", [self.detailItem.amount doubleValue]];
-        enteredtext = @"";// This will cause the first thing the user types to start the text anew
+        self.transactionAmount.text = [NSString stringWithFormat:@"$%.2f", [self.detailItem.amount doubleValue]];
+
+        // Let's set up our enteredtext as the amount text without the . and $ sign
+        enteredtext = [[self.transactionAmount.text stringByReplacingOccurrencesOfString:@"$" withString:@""] stringByReplacingOccurrencesOfString:@"." withString:@""];
+        if([enteredtext doubleValue] == 0)
+        {
+            enteredtext = @"";
+        }
+        
         self.transactionDatePicker.date = self.detailItem.transactionDate;
         self.transactionType.selectedSegmentIndex = [self.detailItem.transactionType integerValue];
     }
@@ -98,7 +105,7 @@ static NSString *enteredtext; // used for the atm style input for amount
 
 - (IBAction)saveTransaction:(id)sender {
     self.detailItem.details = self.detailsText.text;
-    self.detailItem.amount = [NSNumber numberWithDouble:[self.transactionAmount.text doubleValue]];
+    self.detailItem.amount = [NSNumber numberWithDouble:[[self.transactionAmount.text stringByReplacingOccurrencesOfString:@"$" withString:@""] doubleValue]];
     [self.navigationController popViewControllerAnimated:YES];
     
     // Save the changes to the persistent store
@@ -118,7 +125,19 @@ static NSString *enteredtext; // used for the atm style input for amount
     return YES;
 }
 - (IBAction)saveTransactionDate:(id)sender {
-    self.detailItem.transactionDate = self.transactionDatePicker.date;
+    NSDate *dateAtMidnight = self.transactionDatePicker.date;
+    NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+    [calendar setTimeZone:[NSTimeZone timeZoneForSecondsFromGMT:0]];
+    
+    NSDateComponents *dateComponents = [calendar components:NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit
+                                                   fromDate:dateAtMidnight];
+    [dateComponents setHour:0];
+    [dateComponents setMinute:0];
+    [dateComponents setSecond:0];
+    
+    dateAtMidnight = [calendar dateFromComponents:dateComponents];
+    
+    self.detailItem.transactionDate = dateAtMidnight;
 }
 
 - (IBAction)amountChanged:(UITextField *)sender {
@@ -143,7 +162,7 @@ static NSString *enteredtext; // used for the atm style input for amount
     {
         if(range.length==1)
         {
-            if(enteredtext.length>1)
+            if(enteredtext.length>0)
                 enteredtext = [enteredtext substringWithRange:NSMakeRange(0,enteredtext.length-1)];
         }
         else
@@ -151,10 +170,10 @@ static NSString *enteredtext; // used for the atm style input for amount
             if(enteredtext.length<9)
                 enteredtext = [NSString stringWithFormat:@"%@%@",enteredtext,string];
         }
-        double amountindecimal = [enteredtext floatValue];
+        double amountindecimal = [enteredtext doubleValue];
         double res=amountindecimal * pow(10, -2);
-        NSString * neededstring = [NSString stringWithFormat:@"%.2f",res];
-        if([neededstring isEqualToString:@"0.00"])
+        NSString * neededstring = [NSString stringWithFormat:@"$%.2f",res];
+        if([neededstring isEqualToString:@"$0.00"])
             enteredtext = @"0";
         textField.text = neededstring;
         return NO;
