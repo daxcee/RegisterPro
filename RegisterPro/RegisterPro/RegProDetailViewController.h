@@ -8,11 +8,15 @@
 
 #import <UIKit/UIKit.h>
 @class Transaction;
-@interface RegProDetailViewController : UIViewController <UISplitViewControllerDelegate, UITextFieldDelegate>
+@interface RegProDetailViewController : UIViewController <UISplitViewControllerDelegate, UITextFieldDelegate, UITableViewDelegate, UITableViewDataSource>
 
 @property (strong, nonatomic) Transaction *detailItem;
 
 @property (weak, nonatomic) IBOutlet UILabel *detailDescriptionLabel;
+@property (strong, nonatomic) UITableView *autocompleteTableView;
+@property (strong, nonatomic) NSMutableArray *autocompleteValueArray;
+@property (strong, nonatomic) NSMutableArray *pastDetailDescriptionValuesArray;
+
 @property (weak, nonatomic) IBOutlet UITextField *detailsText;
 @property (weak, nonatomic) IBOutlet UITextField *transactionAmount;
 - (IBAction)saveTransaction:(id)sender;

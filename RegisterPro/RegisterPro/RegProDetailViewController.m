@@ -38,8 +38,6 @@ static NSString *enteredtext; // used for the atm style input for amount
     // Update the user interface for the detail item.
 
     if (self.detailItem) {
-        //self.detailDescriptionLabel.text = [[self.detailItem valueForKey:@"timeStamp"] description];
-        self.detailDescriptionLabel.text = self.detailItem.details;
         self.detailsText.text = self.detailItem.details;
         double amount = [self.detailItem.amount doubleValue];
         amount = amount>=0?amount:-1*amount;
@@ -54,6 +52,47 @@ static NSString *enteredtext; // used for the atm style input for amount
         
         self.transactionDatePicker.date = self.detailItem.transactionDate;
         self.transactionType.selectedSegmentIndex = [self.detailItem.transactionType integerValue];
+        
+        // Let's add an autocomplete tableView to the description box
+        CGRect autoCompleteFrame = CGRectMake(self.detailsText.frame.origin.x,
+                                              self.detailsText.frame.origin.y + self.detailsText.frame.size.height,
+                                              self.detailsText.frame.size.width,
+                                              175);
+        self.autocompleteTableView = [[UITableView alloc] initWithFrame:
+                                 autoCompleteFrame style:UITableViewStylePlain];
+        self.autocompleteTableView.delegate = self;
+        self.autocompleteTableView.dataSource = self;
+        self.autocompleteTableView.scrollEnabled = YES;
+        self.autocompleteTableView.hidden = YES;// Hide it for now
+        self.autocompleteTableView.layer.borderColor = [UIColor lightGrayColor].CGColor;
+        self.autocompleteTableView.layer.cornerRadius = 5.0f;
+        self.autocompleteTableView.layer.masksToBounds = YES;
+        self.autocompleteTableView.layer.borderWidth = 1.0f;
+        [self.view addSubview:self.autocompleteTableView];
+        
+        // Let's create the array for past detailed values (get it from core data)
+        if(!self.pastDetailDescriptionValuesArray)
+        {
+            self.pastDetailDescriptionValuesArray = [[NSMutableArray alloc] init];
+        }
+        [self.pastDetailDescriptionValuesArray removeAllObjects];
+        NSManagedObjectContext *context = [self.detailItem managedObjectContext];
+        NSEntityDescription *entity = [NSEntityDescription entityForName:@"Transaction" inManagedObjectContext:context];
+        NSFetchRequest *request = [[NSFetchRequest alloc] init];
+        [request setEntity:entity];
+        //    [request setResultType:NSDictionaryResultType];
+        //    [request setPropertiesToFetch:@[@"amount"]];
+        
+        NSError *error;
+        NSArray *objects = [context executeFetchRequest:request error:&error];
+        if(objects == nil)
+        {NSLog(@"Could not get transaction total");}
+        
+        for(Transaction* item in objects)
+        {
+            if(item.details)
+                [self.pastDetailDescriptionValuesArray addObject:item.details];
+        }
     }
 }
 
@@ -166,8 +205,17 @@ static NSString *enteredtext; // used for the atm style input for amount
 - (IBAction)transactionTypeChanged:(id)sender {
 }
 
+#pragma mark - Text field delegates
+- (void)textFieldDidEndEditing:(UITextField *)textField
+{
+    if(textField == self.detailsText)
+    {
+        self.autocompleteTableView.hidden = YES;
+    }
+}
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
 {
+    // Amount field is being edited
     if(textField == self.transactionAmount)
     {
         if(range.length==1)
@@ -188,7 +236,68 @@ static NSString *enteredtext; // used for the atm style input for amount
         textField.text = neededstring;
         return NO;
     }
+    // Description field is being edited
+    else if(textField == self.detailsText)
+    {
+        //self.autocompleteTableView.hidden = NO;
+        NSString *substring = [NSString stringWithString:textField.text];
+        substring = [substring
+                     stringByReplacingCharactersInRange:range withString:string];
+        [self searchAutocompleteEntriesWithSubstring:substring];
+        
+        if(self.autocompleteValueArray.count > 0)
+            self.autocompleteTableView.hidden = NO;
+        else
+            self.autocompleteTableView.hidden = YES;
+        
+        return YES;
+    }
     return YES;
+}
+
+- (void)searchAutocompleteEntriesWithSubstring:(NSString *)substring {
+    
+    // Let's build our past items array form the past details fields
+
+    
+    // Put anything that starts with this substring into the autocompleteUrls array
+    // The items in this array is what will show up in the table view
+    if(!self.autocompleteValueArray)
+        self.autocompleteValueArray = [[NSMutableArray alloc] init];
+    [self.autocompleteValueArray removeAllObjects];
+    for(NSString *curString in self.pastDetailDescriptionValuesArray) {
+        NSRange substringRange = [curString rangeOfString:substring];
+        if (substringRange.location == 0) {
+            [self.autocompleteValueArray addObject:curString];
+        }
+    }
+    [self.autocompleteTableView reloadData];
+}
+
+#pragma mark - UITableView datasource/delegate functions
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    return 1;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    return [self.autocompleteValueArray count];
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    static NSString *MyIdentifier = @"AutoCompleteIdentifier";
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:MyIdentifier];
+    if (cell == nil) {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault  reuseIdentifier:MyIdentifier];
+    }
+    NSString *details = [self.autocompleteValueArray objectAtIndex:indexPath.row];
+    cell.textLabel.text = details;
+    return cell;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    self.detailsText.text = [self.autocompleteValueArray objectAtIndex:indexPath.row];
+    self.autocompleteTableView.hidden = YES;
 }
 
 @end

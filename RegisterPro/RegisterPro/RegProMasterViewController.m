@@ -35,8 +35,6 @@
     self.navigationItem.rightBarButtonItem = addButton;
     self.detailViewController = (RegProDetailViewController *)[[self.splitViewController.viewControllers lastObject] topViewController];
     
-    double total = [self getTransactionTotal];
-    
     // Let's send some test parse data
 //    PFObject *testObject = [PFObject objectWithClassName:@"TestObject"];
 //    testObject[@"foo"] = @"bar";
