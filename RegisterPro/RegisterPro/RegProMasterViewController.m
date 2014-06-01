@@ -12,6 +12,7 @@
 #import "Transaction.h"
 @interface RegProMasterViewController ()
 - (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath;
+@property (nonatomic, strong) Transaction *newlyCreatedTransactionForDetailsView;
 @end
 
 @implementation RegProMasterViewController
@@ -175,6 +176,18 @@
         NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
         abort();
     }
+    
+    // Now let's load the detail view for the added transaction
+    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
+        self.detailViewController.detailItem = transaction;
+    }
+    else
+    {
+        self.newlyCreatedTransactionForDetailsView = transaction;
+    }
+    
+    [self performSegueWithIdentifier:@"showDetail" sender:self];
+
 }
 
 #pragma mark - Table View
@@ -196,6 +209,8 @@
     [self configureCell:cell atIndexPath:indexPath];
     return cell;
 }
+
+
 
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -237,7 +252,22 @@
 {
     if ([[segue identifier] isEqualToString:@"showDetail"]) {
         NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
-        Transaction *object = [[self fetchedResultsController] objectAtIndexPath:indexPath];
+        
+        Transaction *object;
+        // If the index path is nil it means that a cell was not selected, for now we can interpret
+        // this as meaning that a new item was created
+        
+        
+        // If we have an index path we can get the object from the fetchedResultsController
+        
+        if(indexPath)
+            object = [[self fetchedResultsController] objectAtIndexPath:indexPath];
+        else if(self.newlyCreatedTransactionForDetailsView)
+        {
+            // Let's use the newlyCreated object and then clear it
+            object = self.newlyCreatedTransactionForDetailsView;
+            self.newlyCreatedTransactionForDetailsView = nil;
+        }
         [[segue destinationViewController] setDetailItem:object];
     }
 }
