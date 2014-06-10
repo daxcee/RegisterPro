@@ -29,7 +29,7 @@
 
     if (self.masterPopoverController != nil) {
         [self.masterPopoverController dismissPopoverAnimated:YES];
-    }        
+    }
 }
 
 static NSString *enteredtext; // used for the atm style input for amount
@@ -71,11 +71,11 @@ static NSString *enteredtext; // used for the atm style input for amount
         [self.view addSubview:self.autocompleteTableView];
         
         // Let's create the array for past detailed values (get it from core data)
-        if(!self.pastDetailDescriptionValuesArray)
+        if(!self.pastDetailDescriptionValuesDictionary)
         {
-            self.pastDetailDescriptionValuesArray = [[NSMutableArray alloc] init];
+            self.pastDetailDescriptionValuesDictionary = [[NSMutableDictionary alloc] init];
         }
-        [self.pastDetailDescriptionValuesArray removeAllObjects];
+        [self.pastDetailDescriptionValuesDictionary removeAllObjects];
         NSManagedObjectContext *context = [self.detailItem managedObjectContext];
         NSEntityDescription *entity = [NSEntityDescription entityForName:@"Transaction" inManagedObjectContext:context];
         NSFetchRequest *request = [[NSFetchRequest alloc] init];
@@ -86,12 +86,12 @@ static NSString *enteredtext; // used for the atm style input for amount
         NSError *error;
         NSArray *objects = [context executeFetchRequest:request error:&error];
         if(objects == nil)
-        {NSLog(@"Could not get transaction total");}
+        {NSLog(@"Could not get transactions for past entries");}
         
         for(Transaction* item in objects)
         {
             if(item.details)
-                [self.pastDetailDescriptionValuesArray addObject:item.details];
+                [self.pastDetailDescriptionValuesDictionary setObject:item forKey:item.details];
         }
     }
 }
@@ -99,6 +99,11 @@ static NSString *enteredtext; // used for the atm style input for amount
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    // Make the back button a cancel button
+//    UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithTitle:@"Cancel" style:UIBarButtonItemStyleBordered target:self action:@selector(cancelButtonPressed:)];
+    UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelButtonPressed:)];
+    self.navigationItem.leftBarButtonItem  = cancelButton;
     
     // Add the save button to the nav bar
     UIBarButtonItem *saveButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSave target:self action:@selector(saveTransaction:)];
@@ -144,6 +149,8 @@ static NSString *enteredtext; // used for the atm style input for amount
     self.masterPopoverController = nil;
 }
 
+#pragma mark - UI Actions
+
 - (IBAction)saveTransaction:(id)sender {
     self.detailItem.details = self.detailsText.text;
     self.detailItem.amount = [NSNumber numberWithDouble:[[self.transactionAmount.text stringByReplacingOccurrencesOfString:@"$" withString:@""] doubleValue]];
@@ -165,11 +172,26 @@ static NSString *enteredtext; // used for the atm style input for amount
     }
 }
 
--(BOOL)textFieldShouldReturn:(UITextField *)textField
-{
-    [textField resignFirstResponder];
-    return YES;
+- (IBAction)cancelButtonPressed:(id)sender {
+    // If it's a new item let's delete it if the user click cancel
+    if(self.editMode == TransactionDetailsEditModeNewItem)
+    {
+        NSManagedObjectContext *context = [self.detailItem managedObjectContext];
+        [context deleteObject:self.detailItem];
+        
+        NSError *error = nil;
+        if (![context save:&error]) {
+            // Cober-todo: handle error
+            // Replace this implementation with code to handle the error appropriately.
+            // abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
+            NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+            abort();
+        }
+    }
+    
+    [self.navigationController popViewControllerAnimated:YES];
 }
+
 - (IBAction)saveTransactionDate:(id)sender {
     NSDate *dateAtMidnight = self.transactionDatePicker.date;
     NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
@@ -206,6 +228,12 @@ static NSString *enteredtext; // used for the atm style input for amount
 }
 
 #pragma mark - Text field delegates
+
+-(BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+    [textField resignFirstResponder];
+    return YES;
+}
 - (void)textFieldDidEndEditing:(UITextField *)textField
 {
     if(textField == self.detailsText)
@@ -255,6 +283,7 @@ static NSString *enteredtext; // used for the atm style input for amount
     return YES;
 }
 
+#pragma mark - Autocomplete for details
 - (void)searchAutocompleteEntriesWithSubstring:(NSString *)substring {
     
     // Let's build our past items array form the past details fields
@@ -265,10 +294,11 @@ static NSString *enteredtext; // used for the atm style input for amount
     if(!self.autocompleteValueArray)
         self.autocompleteValueArray = [[NSMutableArray alloc] init];
     [self.autocompleteValueArray removeAllObjects];
-    for(NSString *curString in self.pastDetailDescriptionValuesArray) {
-        NSRange substringRange = [curString rangeOfString:substring];
+    NSArray *pastDetailDescriptionValueArray = [[self.pastDetailDescriptionValuesDictionary allKeys] sortedArrayUsingSelector: @selector(caseInsensitiveCompare:)];
+    for(NSString *key in pastDetailDescriptionValueArray) {
+        NSRange substringRange = [key rangeOfString:substring];
         if (substringRange.location == 0) {
-            [self.autocompleteValueArray addObject:curString];
+            [self.autocompleteValueArray addObject:key];
         }
     }
     [self.autocompleteTableView reloadData];

@@ -180,6 +180,7 @@
     // Now let's load the detail view for the added transaction
     if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
         self.detailViewController.detailItem = transaction;
+        self.detailViewController.editMode = TransactionDetailsEditModeNewItem;
     }
     else
     {
@@ -226,6 +227,7 @@
         
         NSError *error = nil;
         if (![context save:&error]) {
+            // Cober-todo: handle error
              // Replace this implementation with code to handle the error appropriately.
              // abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development. 
             NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
@@ -267,8 +269,12 @@
             // Let's use the newlyCreated object and then clear it
             object = self.newlyCreatedTransactionForDetailsView;
             self.newlyCreatedTransactionForDetailsView = nil;
+            
+            // Let's set the edit mode to new
+            [[segue destinationViewController] setEditMode:TransactionDetailsEditModeNewItem];
         }
         [[segue destinationViewController] setDetailItem:object];
+        
     }
 }
 
