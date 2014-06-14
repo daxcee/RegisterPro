@@ -424,6 +424,12 @@
     Transaction *object = [self.fetchedResultsController objectAtIndexPath:indexPath];
     cell.textLabel.text = object.details;
     cell.detailTextLabel.text = [NSString stringWithFormat:@"$%.2f", [object.amount doubleValue]];
+
+    // Cober-todo: Need to add "cleared" flag to determine if the transaction has been "cleared".  Indicate clear status with check mark and make the text the default gray color.
+    if([object.amount doubleValue] < 0)
+        cell.detailTextLabel.textColor = [UIColor redColor];
+    else
+        cell.detailTextLabel.textColor = [UIColor blueColor];
 }
 
 -(double)getTransactionTotal

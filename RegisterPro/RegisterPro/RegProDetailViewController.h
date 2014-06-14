@@ -14,6 +14,13 @@ enum
     TransactionDetailsEditModeNewItem
 };
 
+typedef enum
+{
+    TransactionViewValidationValid = 0,
+    TransactionViewValidationInvalidDescription,
+    TransactionViewValidationInvalidAmount
+}TransactionViewValidationType;
+
 @class Transaction;
 @interface RegProDetailViewController : UIViewController <UISplitViewControllerDelegate, UITextFieldDelegate, UITableViewDelegate, UITableViewDataSource>
 

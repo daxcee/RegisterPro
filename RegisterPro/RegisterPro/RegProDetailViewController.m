@@ -152,23 +152,50 @@ static NSString *enteredtext; // used for the atm style input for amount
 #pragma mark - UI Actions
 
 - (IBAction)saveTransaction:(id)sender {
-    self.detailItem.details = self.detailsText.text;
-    self.detailItem.amount = [NSNumber numberWithDouble:[[self.transactionAmount.text stringByReplacingOccurrencesOfString:@"$" withString:@""] doubleValue]];
-    self.detailItem.transactionType = [NSNumber numberWithInt:self.transactionType.selectedSegmentIndex];
-    
-    if([self.detailItem.transactionType integerValue] == 0)// COBER-TODO: USE CONSTANT
-        self.detailItem.amount = [NSNumber numberWithDouble: -1*[self.detailItem.amount doubleValue]];
-    
-    [self.navigationController popViewControllerAnimated:YES];
-    
-    // Save the changes to the persistent store
-    NSError *error = nil;
-    NSManagedObjectContext *context = [self.detailItem managedObjectContext];
-    if (![context save:&error]) {
-        // Replace this implementation with code to handle the error appropriately.
-        // abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
-        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-        abort();
+    NSInteger validate = [self validateFields];
+    switch (validate)
+    {
+        case TransactionViewValidationValid:
+        {
+            self.detailItem.details = self.detailsText.text;
+            self.detailItem.amount = [NSNumber numberWithDouble:[[self.transactionAmount.text stringByReplacingOccurrencesOfString:@"$" withString:@""] doubleValue]];
+            self.detailItem.transactionType = [NSNumber numberWithInt:self.transactionType.selectedSegmentIndex];
+            
+            if([self.detailItem.transactionType integerValue] == 0)// COBER-TODO: USE CONSTANT
+                self.detailItem.amount = [NSNumber numberWithDouble: -1*[self.detailItem.amount doubleValue]];
+            
+            [self.navigationController popViewControllerAnimated:YES];
+            
+            // Save the changes to the persistent store
+            NSError *error = nil;
+            NSManagedObjectContext *context = [self.detailItem managedObjectContext];
+            if (![context save:&error]) {
+                // Replace this implementation with code to handle the error appropriately.
+                // abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
+                NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+                abort();
+            }
+        }
+            break;
+            
+        case TransactionViewValidationInvalidDescription:
+        {
+            [self.detailsText becomeFirstResponder];
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Missing Info" message:@"You have not entered a description" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+            [alert show];
+        }
+            break;
+            
+        case TransactionViewValidationInvalidAmount:
+        {
+            [self.transactionAmount becomeFirstResponder];
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Missing Info" message:@"You must enter an amount" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+            [alert show];
+        }
+            break;
+            
+        default:
+            break;
     }
 }
 
@@ -328,6 +355,17 @@ static NSString *enteredtext; // used for the atm style input for amount
 {
     self.detailsText.text = [self.autocompleteValueArray objectAtIndex:indexPath.row];
     self.autocompleteTableView.hidden = YES;
+}
+
+#pragma mark - Validation
+- (NSInteger)validateFields
+{
+    if(!self.detailsText.text || [self.detailsText.text isEqualToString:@""])
+        return TransactionViewValidationInvalidDescription;
+    else if([[self.transactionAmount.text stringByReplacingOccurrencesOfString:@"$" withString:@""] doubleValue] == 0)
+        return TransactionViewValidationInvalidAmount;
+    else
+        return TransactionViewValidationValid;
 }
 
 @end
