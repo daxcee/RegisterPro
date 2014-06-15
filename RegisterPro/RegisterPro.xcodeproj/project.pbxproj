@@ -38,6 +38,8 @@
 		7A39444D1929CCBB009C22B9 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A39444C1929CCBB009C22B9 /* StoreKit.framework */; };
 		7A39444F1929CCC9009C22B9 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A39444E1929CCC9009C22B9 /* SystemConfiguration.framework */; };
 		7A394454192ADA19009C22B9 /* Parse.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A394453192ADA19009C22B9 /* Parse.framework */; };
+		7AADD57C194D4FA90039EB0B /* check-off.png in Resources */ = {isa = PBXBuildFile; fileRef = 7AADD57A194D4FA90039EB0B /* check-off.png */; };
+		7AADD57D194D4FA90039EB0B /* check-on.png in Resources */ = {isa = PBXBuildFile; fileRef = 7AADD57B194D4FA90039EB0B /* check-on.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -88,6 +90,9 @@
 		7A39444C1929CCBB009C22B9 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		7A39444E1929CCC9009C22B9 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		7A394453192ADA19009C22B9 /* Parse.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Parse.framework; sourceTree = "<group>"; };
+		7AADD575194D40210039EB0B /* RegisterPro 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "RegisterPro 2.xcdatamodel"; sourceTree = "<group>"; };
+		7AADD57A194D4FA90039EB0B /* check-off.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "check-off.png"; sourceTree = "<group>"; };
+		7AADD57B194D4FA90039EB0B /* check-on.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "check-on.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -171,19 +176,20 @@
 		7A3943D81929A2BD009C22B9 /* RegisterPro */ = {
 			isa = PBXGroup;
 			children = (
-				7A394452192ADA19009C22B9 /* ThirdParty */,
+				7AADD579194D4FA90039EB0B /* Images */,
+				7A3943F31929A2BD009C22B9 /* Images.xcassets */,
+				7A3943E71929A2BD009C22B9 /* Main_iPad.storyboard */,
+				7A3943E41929A2BD009C22B9 /* Main_iPhone.storyboard */,
 				7A3944111929AD21009C22B9 /* Model */,
+				7A3943EA1929A2BD009C22B9 /* RegisterPro.xcdatamodeld */,
 				7A3943E11929A2BD009C22B9 /* RegProAppDelegate.h */,
 				7A3943E21929A2BD009C22B9 /* RegProAppDelegate.m */,
-				7A3943E41929A2BD009C22B9 /* Main_iPhone.storyboard */,
-				7A3943E71929A2BD009C22B9 /* Main_iPad.storyboard */,
-				7A3943ED1929A2BD009C22B9 /* RegProMasterViewController.h */,
-				7A3943EE1929A2BD009C22B9 /* RegProMasterViewController.m */,
 				7A3943F01929A2BD009C22B9 /* RegProDetailViewController.h */,
 				7A3943F11929A2BD009C22B9 /* RegProDetailViewController.m */,
-				7A3943F31929A2BD009C22B9 /* Images.xcassets */,
-				7A3943EA1929A2BD009C22B9 /* RegisterPro.xcdatamodeld */,
+				7A3943ED1929A2BD009C22B9 /* RegProMasterViewController.h */,
+				7A3943EE1929A2BD009C22B9 /* RegProMasterViewController.m */,
 				7A3943D91929A2BD009C22B9 /* Supporting Files */,
+				7A394452192ADA19009C22B9 /* ThirdParty */,
 			);
 			path = RegisterPro;
 			sourceTree = "<group>";
@@ -232,6 +238,15 @@
 				7A394453192ADA19009C22B9 /* Parse.framework */,
 			);
 			path = ThirdParty;
+			sourceTree = "<group>";
+		};
+		7AADD579194D4FA90039EB0B /* Images */ = {
+			isa = PBXGroup;
+			children = (
+				7AADD57A194D4FA90039EB0B /* check-off.png */,
+				7AADD57B194D4FA90039EB0B /* check-on.png */,
+			);
+			path = Images;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -314,7 +329,9 @@
 				7A3943E91929A2BD009C22B9 /* Main_iPad.storyboard in Resources */,
 				7A3943F41929A2BD009C22B9 /* Images.xcassets in Resources */,
 				7A3943E61929A2BD009C22B9 /* Main_iPhone.storyboard in Resources */,
+				7AADD57C194D4FA90039EB0B /* check-off.png in Resources */,
 				7A3943DD1929A2BD009C22B9 /* InfoPlist.strings in Resources */,
+				7AADD57D194D4FA90039EB0B /* check-on.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -578,9 +595,10 @@
 		7A3943EA1929A2BD009C22B9 /* RegisterPro.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				7AADD575194D40210039EB0B /* RegisterPro 2.xcdatamodel */,
 				7A3943EB1929A2BD009C22B9 /* RegisterPro.xcdatamodel */,
 			);
-			currentVersion = 7A3943EB1929A2BD009C22B9 /* RegisterPro.xcdatamodel */;
+			currentVersion = 7AADD575194D40210039EB0B /* RegisterPro 2.xcdatamodel */;
 			path = RegisterPro.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;

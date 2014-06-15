@@ -419,17 +419,114 @@
 }
  */
 
+#pragma mark - Configure Cells, Accessory Views and actions
+
 - (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath
 {
     Transaction *object = [self.fetchedResultsController objectAtIndexPath:indexPath];
     cell.textLabel.text = object.details;
     cell.detailTextLabel.text = [NSString stringWithFormat:@"$%.2f", [object.amount doubleValue]];
 
-    // Cober-todo: Need to add "cleared" flag to determine if the transaction has been "cleared".  Indicate clear status with check mark and make the text the default gray color.
-    if([object.amount doubleValue] < 0)
-        cell.detailTextLabel.textColor = [UIColor redColor];
+    // Let's set the color of the transaction amount based on it's clear status, and then by whether
+    // or not it's a deposit or withdrawal
+    if(![object.cleared boolValue])
+    {
+        if([object.amount doubleValue] < 0)
+            cell.detailTextLabel.textColor = [UIColor redColor];
+        else
+            cell.detailTextLabel.textColor = [UIColor blueColor];
+        cell.textLabel.textColor = [UIColor blackColor];
+    }
     else
-        cell.detailTextLabel.textColor = [UIColor blueColor];
+    {
+        cell.detailTextLabel.textColor = [UIColor grayColor];
+        cell.textLabel.textColor = [UIColor grayColor];
+    }
+    
+    [cell setAccessoryType:UITableViewCellAccessoryDetailButton];
+    
+    // Check if the transaction is cleared and add the button
+    if([object.cleared boolValue])
+    {
+        cell.accessoryView = [self makeClearedButton];
+
+    }
+    else
+    {
+        cell.accessoryView = [self makeUnclearedButton];
+
+    }
+}
+
+- (UIButton *) makeClearedButton
+{
+    UIButton * button = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 40, 40)];
+    [button setImage:[UIImage imageNamed:@"check-on.png" ] forState:UIControlStateNormal];
+    
+    [button addTarget: self
+               action: @selector(clearedButtonTapped:withEvent:)
+     forControlEvents: UIControlEventTouchUpInside];
+    
+    return ( button );
+}
+
+- (UIButton *) makeUnclearedButton
+{
+    UIButton * button = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 40, 40)];
+    [button setImage:[UIImage imageNamed:@"check-off.png" ] forState:UIControlStateNormal];
+    
+    [button addTarget: self
+               action: @selector(clearedButtonTapped:withEvent:)
+     forControlEvents: UIControlEventTouchUpInside];
+    
+    return ( button );
+}
+
+- (void) clearedButtonTapped: (UIControl *) button withEvent: (UIEvent *) event
+{
+    // Get the index path that was tapped
+    NSIndexPath * indexPath = [self.tableView indexPathForRowAtPoint: [[[event touchesForView: button] anyObject] locationInView: self.tableView]];
+    int row = indexPath.row;
+    if ( indexPath == nil )
+        return;
+    
+    // Clear or unclear the transaction
+    Transaction *object = [[self fetchedResultsController] objectAtIndexPath:indexPath];
+    if([object.cleared boolValue])// Object is cleared, we are un-clearing it
+    {
+        // Update the accesory view/button
+        [((UIButton *)button) setImage:[UIImage imageNamed:@"check-off.png"] forState:UIControlStateNormal];
+        object.cleared = [NSNumber numberWithBool:NO];
+        
+        // Update the text color
+        UITableViewCell* cell = [self.tableView.dataSource tableView:self.tableView cellForRowAtIndexPath:indexPath];
+        if([object.amount doubleValue] < 0)
+            cell.detailTextLabel.textColor = [UIColor redColor];
+        else
+            cell.detailTextLabel.textColor = [UIColor blueColor];
+        
+        // Make main text black
+        cell.textLabel.textColor = [UIColor blackColor];
+    }
+    else// Object is un-cleared, we are clearing it
+    {
+        // Update the accesory view/button
+        [((UIButton *)button) setImage:[UIImage imageNamed:@"check-on.png"] forState:UIControlStateNormal];
+        object.cleared = [NSNumber numberWithBool:YES];
+        
+        // Update the text color
+        UITableViewCell* cell = [self.tableView.dataSource tableView:self.tableView cellForRowAtIndexPath:indexPath];
+        cell.detailTextLabel.textColor = [UIColor grayColor];
+        cell.textLabel.textColor = [UIColor grayColor];
+    }
+
+    // Save the item to the persistent store
+    NSError *error;
+    [[object managedObjectContext] save:&error];
+    if(error)
+    {
+        // Cober-todo: log error
+    }
 }
 
 -(double)getTransactionTotal
